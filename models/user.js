@@ -19,7 +19,7 @@ userSchema.pre("save", async function (next) {
 
 
 userSchema.methods.compararSenha = function(senhaDigitada){
-    return bcrypt.compare(senhaDigitada,this.senha)
+    return bcrypt.compare(senhaDigitada,this.senha);
 }
 
 const user = mongoose.model("User", userSchema);

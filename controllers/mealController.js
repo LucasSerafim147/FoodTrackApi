@@ -19,7 +19,7 @@ export const ExibirTodasMeals = async (req, res) =>{
 export const criarMeal = async (req, res) => {
 try {
     
-    const resposta = await meal.create(req.body)
+    const resposta = await meal.create({...req.body, user: req.userId});
     res.status(200).json(resposta)
 
 } catch (error) {
