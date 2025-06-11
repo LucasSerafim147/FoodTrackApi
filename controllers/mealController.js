@@ -4,7 +4,7 @@ import meal from  "../models/meal.js";
 export const ExibirTodasMeals = async (req, res) =>{
     try {
         
-        const meals = await meals.find({})
+        const meals = await meal.find({})
         res.status(200).json(meals)
 
     } catch (error) {
@@ -14,9 +14,7 @@ export const ExibirTodasMeals = async (req, res) =>{
 //#endregion
 
 
-//#region  criar usuario
-
-
+//#region  criar meals
 
 export const criarMeal = async (req, res) => {
 try {
@@ -31,7 +29,7 @@ try {
 //#endregion
 
  
-//#region  exebir usuario por id
+//#region  exebir meals por id
 export const exibirMealId = async (req, res) => {
     try {
         const {id} = req.params;
@@ -45,19 +43,21 @@ export const exibirMealId = async (req, res) => {
 }
 //#endregion
 
-//#region  atualiza usuario por id
+//#region  atualiza meals por id
 export const atualizarMeal = async (req, res) => {
     try {
         const {id} = req.params;
 
-        const mealId = await meal.findByIdAndUpdate(id, req.body);  
+        const refeicaoAtualizada = await meal.findByIdAndUpdate(id, req.body,{
+            new: true,
+        });  
 
-        if(!mealId){
-            return res.status(404).json({message:"Id do usuário não encontrado"})
+        if(!refeicaoAtualizada){
+            return res.status(404).json({message:"Id da refeição não encontrada"})
         }
 
-      const mealAtualizado = await user.findById(id);
-      res.status(200).json(mealAtualizado)
+     
+      res.status(200).json(refeicaoAtualizada)
 
 
     } catch (error) {
@@ -66,14 +66,14 @@ export const atualizarMeal = async (req, res) => {
 }
 //#endregion
 
-//#region  deletar usuario por id
+//#region  deletar meals por id
 export const DeletarMeal = async (req, res) => {
     try {
         const {id} = req.params;
 
-        const userId = await user.findByIdAndDelete(id);  
+        const mealId = await meal.findByIdAndDelete(id);  
 
-        if(!userId){
+        if(!mealId){
             return res.status(404).json({message:"Id da Refeição não encontrado"})
         }
 
