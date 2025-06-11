@@ -3,12 +3,12 @@ import { AtualizarUsuario, CriarUsuario, DeletarUsuario, ExibirTodosUsuarios, Ex
 import { Router } from "express";
 
 
-const router = Router()
+const usersRoute = Router()
 
-router.get("/users", ExibirTodosUsuarios);
-router.post("/users", CriarUsuario);
-router.get("/user/:id", ExibirUsuarioId)
-router.put("/user/:id", AtualizarUsuario)
-router.delete("/user/:id", DeletarUsuario)
+usersRoute.get("/users", ExibirTodosUsuarios);
+usersRoute.post("/users", CriarUsuario);
+usersRoute.get("/user/:id", ExibirUsuarioId)
+usersRoute.put("/user/:id", AtualizarUsuario)
+usersRoute.delete("/user/:id", DeletarUsuario)
 
-export default router
+export default usersRoute

@@ -9,4 +9,6 @@ const mealSchema = new mongoose.Schema({
 });
 
 
-module.exports = mongoose.model("Meal", mealSchema);
+const meal = mongoose.model("meal", mealSchema);
+
+export default meal

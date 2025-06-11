@@ -1,7 +1,8 @@
 import express from 'express'
 import { connectDB } from './config/db.js'
 import user from './models/user.js';
-import router from './routes/userRoutes.js';
+import usersRoute from './routes/userRoutes.js';
+import mealsRoute from './routes/mealsRoutes.js';
 
 const app = express()
 app.use(express.json());
@@ -11,7 +12,8 @@ app.use(express.json());
 await connectDB()
 
 
-app.use('/api',router)
+app.use('/api',usersRoute)
+app.use('/api',mealsRoute)
 
 app.get('/', (req, res) => {
    
