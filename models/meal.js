@@ -1,11 +1,11 @@
 import mongoose from "mongoose";
 
 const mealSchema = new mongoose.Schema({
-    
-    titulo: String,
-    descricao:String,
-    fotoUrl: String,
-    date: {type:Date, default:Date.now}
+  titulo: String,
+  descricao: String,
+  fotoUrl: String,
+  date: { type: Date, default: Date.now },
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'user', required: true } 
 });
 
 

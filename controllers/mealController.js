@@ -1,15 +1,13 @@
 import meal from  "../models/meal.js";
 
 //#region  get all
-export const ExibirTodasMeals = async (req, res) =>{
-    try {
-        
-        const meals = await meal.find({})
-        res.status(200).json(meals)
-
-    } catch (error) {
-        res.status(500).json({message: error.message} )
-    }
+const ExibirTodasMeals = async (req, res) => {
+  try {
+    const mealsList = await meal.find({ user: req.userId }); 
+    res.json({ meals: mealsList });
+  } catch (error) {
+    res.status(500).json({ message: "Erro ao buscar refeições" });
+  }
 };
 //#endregion
 

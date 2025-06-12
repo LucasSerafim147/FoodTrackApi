@@ -5,7 +5,7 @@ import { proteger } from "../middleware/auth.js";
 
 const mealsRoute = Router()
 
-mealsRoute.get("/meals", ExibirTodasMeals);
+mealsRoute.get("/meals", proteger, ExibirTodasMeals);
 mealsRoute.post("/meals", proteger,criarMeal);
 mealsRoute.get("/meal/:id", exibirMealId)
 mealsRoute.put("/meal/:id",proteger, atualizarMeal)

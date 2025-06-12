@@ -4,10 +4,13 @@ import user from './models/user.js';
 import usersRoute from './routes/userRoutes.js';
 import mealsRoute from './routes/mealsRoutes.js';
 import loginRouter from './routes/authRoutes.js';
+import cors from 'cors'
 
-const app = express()
+
+const app = express();
 app.use(express.json());
 
+app.use(cors({ origin: '*' }));
 
 
 await connectDB()
