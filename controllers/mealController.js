@@ -1,9 +1,10 @@
 import meal from  "../models/meal.js";
+import cloudinary from "../config/cloudinary.js";
 
 //#region  get all
-const ExibirTodasMeals = async (req, res) => {
+ export const ExibirTodasMeals = async (req, res) => {
   try {
-    const mealsList = await meal.find({ user: req.userId }); 
+    const mealsList = await meal.find({ user: req.userId }); // ← busca só as do usuário logado
     res.json({ meals: mealsList });
   } catch (error) {
     res.status(500).json({ message: "Erro ao buscar refeições" });
@@ -15,14 +16,61 @@ const ExibirTodasMeals = async (req, res) => {
 //#region  criar meals
 
 export const criarMeal = async (req, res) => {
-try {
-    
-    const resposta = await meal.create({...req.body, user: req.userId});
-    res.status(200).json(resposta)
+  try {
+    console.log('Corpo da requisição:', req.body);
+    console.log('Arquivo recebido:', req.file);
 
-} catch (error) {
-    res.status(500).json({message: error.message});
-}
+    const { titulo, descricao } = req.body;
+
+    
+    if (!titulo || !descricao) {
+      return res.status(400).json({ message: 'Título e descrição são obrigatórios' });
+    }
+
+    let imageUrl = '';
+    if (req.file) {
+      const buffer = req.file.buffer;
+      console.log('Enviando imagem ao Cloudinary, tamanho do buffer:', buffer.length);
+
+      const result = await new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+          { folder: 'meals' },
+          (error, result) => {
+            if (error) {
+              console.error('Erro no Cloudinary:', error);
+              return reject(error);
+            }
+            resolve(result);
+          }
+        );
+        stream.end(buffer);
+      });
+
+      imageUrl = result.secure_url;
+      console.log('URL da imagem gerada:', imageUrl);
+    } else {
+      console.log('Nenhum arquivo de imagem recebido');
+    }
+
+   
+    if (!req.userId) {
+      return res.status(401).json({ message: 'Usuário não autenticado' });
+    }
+
+    const novaRefeicao = await meal.create({
+      titulo,
+      descricao,
+      imagem: imageUrl,
+      user: req.userId,
+    });
+
+    res.status(201).json(novaRefeicao); 
+  } catch (error) {
+    console.error('Erro ao criar refeição:', error);
+    res.status(500).json({
+      message: error.message || 'Erro interno ao criar refeição',
+    });
+  }
 };
 //#endregion
 
